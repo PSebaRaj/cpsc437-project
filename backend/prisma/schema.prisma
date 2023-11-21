@@ -13,42 +13,42 @@ datasource db {
 model StateEducation {
 	id String @id
 	name String
-	y1970 Float
-	y1980 Float
-	y1990 Float
-	y2000 Float
-	y2010 Float
-	y2020 Float
+	y1970 Float?
+	y1980 Float?
+	y1990 Float?
+	y2000 Float?
+	y2010 Float?
+	y2020 Float?
 	counties CountyEducation[]
 }
 
 model CountyEducation {
-	id String @id
+	id String @id @default(cuid())
 	stateId String
 	state StateEducation @relation(fields: [stateId], references: [id])
 	name String
-	y1970 Float
-	y1980 Float
-	y1990 Float
-	y2000 Float
-	y2010 Float
-	y2020 Float
+	y1970 Float?
+	y1980 Float?
+	y1990 Float?
+	y2000 Float?
+	y2010 Float?
+	y2020 Float?
 }
 
 model StateIncome {
-	id String @id
+	id String @id @default(cuid())
 	name String
-	unemploymentY2020 Float
-	medianHHIncome Int
-	percentStateMHHIncome Float
+	unemploymentY2020 Float?
+	medianHHIncome Int?
+	percentStateMHHIncome Float?
 	counties CountyIncome[]
 }
 
 model CountyIncome {
-	id String @id
+	id String @id @default(cuid())
 	stateId String
 	state StateIncome @relation(fields: [stateId], references: [id])
-	unemploymentY2020 Float
-	medianHHIncome Int
-	percentStateMHHIncome Float
+	unemploymentY2020 Float?
+	medianHHIncome Int?
+	percentStateMHHIncome Float?
 }
