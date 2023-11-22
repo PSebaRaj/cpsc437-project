@@ -80,6 +80,7 @@ app.get("/county/:whichstate", async (req: Request, res: Response) => {
   const { whichstate } = req.params;
   const state: state[] =
     await prisma.$queryRaw`SELECT id FROM public."StateEducation" WHERE name = ${whichstate};`;
+
   const stateId = state[0].id;
   console.log("StateId:", stateId)
 
