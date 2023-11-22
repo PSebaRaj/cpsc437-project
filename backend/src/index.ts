@@ -31,6 +31,13 @@ app.get('/create', async (req: Request, res: Response) => {
   res.send(states);
 });
 
+app.get('/fetch', async (req: Request, res: Response) => {
+	const states = await prisma.stateIncome.findMany();
+
+	console.log(states);
+  res.send(states);
+});
+
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
 });

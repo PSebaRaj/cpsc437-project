@@ -48,6 +48,7 @@ model CountyIncome {
 	id String @id @default(cuid())
 	stateId String
 	state StateIncome @relation(fields: [stateId], references: [id])
+	name String
 	unemploymentY2020 Float?
 	medianHHIncome Int?
 	percentStateMHHIncome Float?
