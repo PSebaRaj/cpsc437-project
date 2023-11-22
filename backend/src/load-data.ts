@@ -354,6 +354,5 @@ async function loadEducation() {
 	}
 }
 
-
 loadIncome();
 loadEducation();
