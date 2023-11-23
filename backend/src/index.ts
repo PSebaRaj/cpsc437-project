@@ -20,7 +20,7 @@ app.get("/stateIncome", async (req: Request, res: Response) => {
 
 // Get income data for all counties
 app.get("/countyIncome", async (req: Request, res: Response) => {
-  const counties= await prisma.$queryRaw`SELECT * FROM public."CountyIncome";`;
+  const counties = await prisma.$queryRaw`SELECT * FROM public."CountyIncome";`;
 
   console.log(counties);
   res.send(counties);
@@ -72,8 +72,8 @@ app.get("/state/:state", async (req: Request, res: Response) => {
 });
 
 type state = {
-	id: String,
-}
+  id: String;
+};
 
 // Get income and education data for all counties within a state
 app.get("/county/:whichstate", async (req: Request, res: Response) => {
@@ -82,9 +82,10 @@ app.get("/county/:whichstate", async (req: Request, res: Response) => {
     await prisma.$queryRaw`SELECT id FROM public."StateEducation" WHERE name = ${whichstate};`;
 
   const stateId = state[0].id;
-  console.log("StateId:", stateId)
+  console.log("StateId:", stateId);
 
-  const counties = await prisma.$queryRaw`SELECT * FROM public."CountyEducation" JOIN public."CountyIncome" ON public."CountyEducation".id = public."CountyIncome".id WHERE public."CountyEducation"."stateId" = ${stateId};`;
+  const counties =
+    await prisma.$queryRaw`SELECT * FROM public."CountyEducation" JOIN public."CountyIncome" ON public."CountyEducation".id = public."CountyIncome".id WHERE public."CountyEducation"."stateId" = ${stateId};`;
 
   console.log(counties);
   res.send(counties);
@@ -97,13 +98,56 @@ app.get("/county/:whichstate/:county", async (req: Request, res: Response) => {
   const state: state[] =
     await prisma.$queryRaw`SELECT id FROM public."StateEducation" WHERE name = ${whichstate};`;
   const stateId = state[0].id;
-  console.log("StateId:", stateId)
+  console.log("StateId:", stateId);
 
   const countyData =
     await prisma.$queryRaw`SELECT * FROM public."CountyEducation" JOIN public."CountyIncome" ON public."CountyEducation".id = public."CountyIncome".id WHERE public."CountyEducation"."stateId" = ${stateId} AND public."CountyEducation"."name" = ${county};`;
 
   console.log(countyData);
   res.send(countyData);
+});
+
+interface IName {
+  name: string;
+}
+// Get names of all states
+app.get("/state-names", async (req: Request, res: Response) => {
+  const states: IName[] =
+    await prisma.$queryRaw`SELECT public."StateEducation".name FROM public."StateEducation" JOIN public."StateIncome" ON public."StateEducation".id = public."StateIncome".id;`;
+
+  const stateNames: string[] = states.map((state: IName) => state.name);
+
+  console.log(stateNames);
+  res.send(stateNames);
+});
+
+// Get names of all counties
+app.get("/county-names", async (req: Request, res: Response) => {
+  const counties: IName[] =
+    await prisma.$queryRaw`SELECT public."CountyEducation".name FROM public."CountyEducation" JOIN public."CountyIncome" ON public."CountyEducation".id = public."CountyIncome".id;`;
+
+  const countyNames: string[] = counties.map((county: IName) => county.name);
+
+  console.log(countyNames);
+  res.send(countyNames);
+});
+
+// Get names of all counties within a state
+app.get("/county-names/:whichstate", async (req: Request, res: Response) => {
+  const { whichstate } = req.params;
+  const state: state[] =
+    await prisma.$queryRaw`SELECT id FROM public."StateEducation" WHERE name = ${whichstate};`;
+
+  const stateId = state[0].id;
+  console.log("StateId:", stateId);
+
+  const counties: IName[] =
+    await prisma.$queryRaw`SELECT public."CountyEducation".name FROM public."CountyEducation" JOIN public."CountyIncome" ON public."CountyEducation".id = public."CountyIncome".id WHERE public."CountyEducation"."stateId" = ${stateId};`;
+
+  const countyNames: string[] = counties.map((county: IName) => county.name);
+
+  console.log(countyNames);
+  res.send(countyNames);
 });
 
 app.listen(port, () => {
