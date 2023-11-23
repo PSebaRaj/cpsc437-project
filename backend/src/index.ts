@@ -101,7 +101,7 @@ app.get("/county/:whichstate/:county", async (req: Request, res: Response) => {
   console.log("StateId:", stateId);
 
   const countyData =
-    await prisma.$queryRaw`SELECT * FROM public."CountyEducation" JOIN public."CountyIncome" ON public."CountyEducation".id = public."CountyIncome".id WHERE public."CountyEducation"."stateId" = ${stateId} AND public."CountyEducation"."name" = ${county};`;
+    await prisma.$queryRaw`SELECT * FROM public."CountyEducation" JOIN public."CountyIncome" ON public."CountyEducation".id = public."CountyIncome".id WHERE public."CountyEducation"."stateId" = ${stateId} AND public."CountyIncome"."name" = ${county};`;
 
   console.log(countyData);
   res.send(countyData);
@@ -124,7 +124,7 @@ app.get("/state-names", async (req: Request, res: Response) => {
 // Get names of all counties
 app.get("/county-names", async (req: Request, res: Response) => {
   const counties: IName[] =
-    await prisma.$queryRaw`SELECT public."CountyEducation".name FROM public."CountyEducation" JOIN public."CountyIncome" ON public."CountyEducation".id = public."CountyIncome".id;`;
+    await prisma.$queryRaw`SELECT public."CountyIncome".name FROM public."CountyEducation" JOIN public."CountyIncome" ON public."CountyEducation".id = public."CountyIncome".id;`;
 
   const countyNames: string[] = counties.map((county: IName) => county.name);
 
@@ -142,7 +142,7 @@ app.get("/county-names/:whichstate", async (req: Request, res: Response) => {
   console.log("StateId:", stateId);
 
   const counties: IName[] =
-    await prisma.$queryRaw`SELECT public."CountyEducation".name FROM public."CountyEducation" JOIN public."CountyIncome" ON public."CountyEducation".id = public."CountyIncome".id WHERE public."CountyEducation"."stateId" = ${stateId};`;
+    await prisma.$queryRaw`SELECT public."CountyIncome".name FROM public."CountyEducation" JOIN public."CountyIncome" ON public."CountyEducation".id = public."CountyIncome".id WHERE public."CountyEducation"."stateId" = ${stateId};`;
 
   const countyNames: string[] = counties.map((county: IName) => county.name);
 
