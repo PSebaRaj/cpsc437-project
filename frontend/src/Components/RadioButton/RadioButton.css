@@ -1,0 +1,17 @@
+p {
+    font-weight: bold;
+    text-align: center;
+}
+
+.radioButtonsLabels {
+    flex-direction: row;
+}
+
+.radioButtonsLabels label {
+    margin: 10px;
+    font-size: 1.2em;
+}
+
+.radioButtonsLabels input {
+    margin-right: 7.5px;
+}
