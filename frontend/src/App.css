@@ -26,6 +26,14 @@
     margin-top: 20px;
 }
 
+.checkbox {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    margin-top: 20px;
+}
+
 .dropdown {
     display: flex;
     align-items: center;

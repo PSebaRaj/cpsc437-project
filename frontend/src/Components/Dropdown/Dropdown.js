@@ -2,7 +2,7 @@ import React from 'react';
 import './Dropdown.css';
 
 const Dropdown = (props) => {
-  const { region, options } = props;
+  const { region, options, handleDropdown1Change, handleDropdown2Change, handleDropdown3Change, handleDropdown4Change } = props;
 
   const states = [
     { value: "N/A", label: "----Select a state----" },
@@ -58,34 +58,43 @@ const Dropdown = (props) => {
     { value: 'Wyoming', label: 'Wyoming' },
   ];
 
+  const handleDropdown1 = (event) => {
+    const selectedValue = event.target.value;
+    handleDropdown1Change(selectedValue);
+  };
+
+  const handleDropdown2 = (event) => {
+    const selectedValue = event.target.value;
+    handleDropdown2Change(selectedValue);
+  };
+
+  const handleDropdown3 = (event) => {
+    const selectedValue = event.target.value;
+    handleDropdown3Change(selectedValue);
+  };
+
+  const handleDropdown4 = (event) => {
+    const selectedValue = event.target.value;
+    handleDropdown4Change(selectedValue);
+  };
+
   return (
     <div className='dropdown-body'>
-      {region === "county" &&
-      <div className="dropdown-section">
-        <p>State</p>
-        <select>
-          {states.map((option, index) => (
-            <option key={index} value={option.value}>
-              {option.label}
-            </option>
-          ))}
-        </select>
-      </div>
-      }
-      <div className="dropdown-section">
-        <p>{region.charAt(0).toUpperCase() + region.slice(1)}</p>
-        <select>
-          {options.map((option, index) => (
-            <option key={index} value={option.value}>
-              {option.label}
-            </option>
-          ))}
-        </select>
-      </div>
-      {region !== "national" && (
+      {region === "county" ?
+      <div className='dropdown-body'>
         <div className="dropdown-section">
-          <p>{region.charAt(0).toUpperCase() + region.slice(1)} #2 {" (optional)"}</p>
-          <select>
+          <p>State</p>
+          <select onChange={handleDropdown1}>
+            {states.map((option, index) => (
+              <option key={index} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div className="dropdown-section">
+          <p>{region.charAt(0).toUpperCase() + region.slice(1)}</p>
+          <select onChange={handleDropdown2}>
             {options.map((option, index) => (
               <option key={index} value={option.value}>
                 {option.label}
@@ -93,7 +102,51 @@ const Dropdown = (props) => {
             ))}
           </select>
         </div>
-      )}
+        <div className="dropdown-section">
+          <p>State #2 {" (optional)"}</p>
+          <select onChange={handleDropdown3}>
+            {states.map((option, index) => (
+              <option key={index} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div className="dropdown-section">
+          <p>{region.charAt(0).toUpperCase() + region.slice(1)} #2 {" (optional)"}</p>
+          <select onChange={handleDropdown4}>
+            {options.map((option, index) => (
+              <option key={index} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </select>
+        </div>
+      </div>
+      : region === "state" &&
+      <div className='dropdown-body'>
+          <div className="dropdown-section">
+            <p>{region.charAt(0).toUpperCase() + region.slice(1)}</p>
+            <select onChange={handleDropdown1}>
+              {options.map((option, index) => (
+                <option key={index} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="dropdown-section">
+            <p>{region.charAt(0).toUpperCase() + region.slice(1)} #2 {" (optional)"}</p>
+            <select onChange={handleDropdown2}>
+              {options.map((option, index) => (
+                <option key={index} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
+      }
     </div>
   );
 };
