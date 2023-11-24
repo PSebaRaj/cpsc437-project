@@ -1,7 +1,12 @@
 import express, { Request, Response } from "express";
 import { PrismaClient } from "@prisma/client";
+const cors = require('cors'); // Import the 'cors' package
 
 const app = express();
+
+// Use CORS middleware
+app.use(cors());
+
 const port = process.env.PORT || 3030;
 
 const prisma = new PrismaClient();

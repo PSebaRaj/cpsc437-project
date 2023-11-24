@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import './App.css';
 import Dropdown from './Components/Dropdown/Dropdown';
 import RadioButton from './Components/RadioButton/RadioButton';
+import axios from 'axios';
 
 function App() {
   const [region, setRegion] = useState('');
@@ -80,7 +81,17 @@ function App() {
   };
 
   const handleSubmit = () => {
-
+    if (region) {
+      axios.get("http://localhost:3030/")
+        .then(response => {
+          console.log('Response:', response.data);
+        })
+        .catch(error => {
+          console.error('Error fetching data:', error);
+        });
+    } else {
+      console.log('Please select a region');
+    }
   }
 
   return (
@@ -97,7 +108,7 @@ function App() {
         <Dropdown region={region} options={region === "national" ? nationalOptions : region === "state" ? stateOptions : countyOptions} />
       </div>
       }
-      <div className='submit'>
+      <div className='submit' onClick={handleSubmit}>
         <button className="submit-button" onClick={handleSubmit}>Submit</button>
       </div>
     </div>
