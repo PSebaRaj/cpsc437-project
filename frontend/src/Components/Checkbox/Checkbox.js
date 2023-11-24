@@ -3,7 +3,7 @@ import './Checkbox.css';
 
 const Checkbox = (props) => {
 
-  const { handleEducationChange, handleIncomeChange } = props;
+  const { education, income, handleEducationChange, handleIncomeChange } = props;
 
   return (
     <div>
@@ -14,6 +14,7 @@ const Checkbox = (props) => {
                 type="checkbox"
                 name="metric"
                 value="income"
+                checked={income}
                 onChange={handleIncomeChange}
             />
             Income
@@ -23,6 +24,7 @@ const Checkbox = (props) => {
                 type="checkbox"
                 name="metric"
                 value="education"
+                checked={education}
                 onChange={handleEducationChange}
             />
             Education
