@@ -85,24 +85,24 @@ function App() {
         }
         if (region === "state" && dropdown1 !== "N/A") {
           if (dropdown2 === "N/A") {
-            if (income && !education) console.log(`Get ${dropdown1}'s income`)
-            if (!income && education) console.log(`Get ${dropdown1}'s education`)
+            if (income && !education) url = "state-income/" + dropdown1
+            if (!income && education) url = "state-education/" + dropdown1
             if (income && education) url = "state/" + dropdown1
           } else {
-            if (income && !education) console.log(`Get ${dropdown1}'s and ${dropdown2}'s income`)
-            if (!income && education) console.log(`Get ${dropdown1}'s and ${dropdown2}'s education`)
-            if (income && education) console.log(`Get ${dropdown1}'s and ${dropdown2}'s income and education`)
+            if (income && !education) url = "state-income/compare/" + dropdown1 + "/" + dropdown2
+            if (!income && education) url = "state-education/compare/" + dropdown1 + "/" + dropdown2
+            if (income && education) url = "state/compare/" + dropdown1 + "/" + dropdown2
           }
         }
         if (region === "county" && dropdown1 !== "N/A" && dropdown2 !== "N/A") {
           if (dropdown3 === "N/A" || dropdown4 === "N/A") {
-            if (income && !education) console.log(`Get ${dropdown1}, ${dropdown2}'s income`)
-            if (!income && education) console.log(`Get ${dropdown1}, ${dropdown2}'s education`)
+            if (income && !education) url = "county-income/" + dropdown1 + "/" + dropdown2
+            if (!income && education) url = "county-education/" + dropdown1 + "/" + dropdown2
             if (income && education) url = "county/" + dropdown1 + "/" + dropdown2
           } else {
-            if (income && !education) console.log(`Get ${dropdown1}, ${dropdown2}'s and ${dropdown3}, ${dropdown4}'s income`)
-            if (!income && education) console.log(`Get ${dropdown1}, ${dropdown2}'s and ${dropdown3}, ${dropdown4}'s education`)
-            if (income && education) console.log(`Get ${dropdown1}, ${dropdown2}'s and ${dropdown3}, ${dropdown4}'s income and education`)
+            if (income && !education) url = "county-income/compare/" + dropdown1 + "/" + dropdown2 + "/" + dropdown3 + "/" + dropdown4
+            if (!income && education) url = "county-education/compare/" + dropdown1 + "/" + dropdown2 + "/" + dropdown3 + "/" + dropdown4
+            if (income && education) url = "county/compare/" + dropdown1 + "/" + dropdown2 + "/" + dropdown3 + "/" + dropdown4
           }
         }
         axios.get(baseUrl + url)
