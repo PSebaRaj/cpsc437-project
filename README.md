@@ -17,3 +17,8 @@ by Patrick SebaRaj, Nikhil Ismail, Andy Yang
 - Load all of the raw data into the Postgres DB with the load script `./backend/src/load-data.ts`
 	- Run `npm run load-data`
 - Start the backend server with `npm start`
+### Frontend
+- Navigate into the frontend folder with `cd frontend`
+	- Prerequisite: Node / NPM
+- Run `npm install`
+- Start the frontend web app with `npm start`
