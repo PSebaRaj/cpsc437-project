@@ -1,5 +1,5 @@
 import express, { Request, Response } from "express";
-import { PrismaClient, StateEducation } from "@prisma/client";
+import { PrismaClient, StateEducation, StateIncome } from "@prisma/client";
 const cors = require("cors"); // Import the 'cors' package
 
 const app = express();
@@ -65,6 +65,52 @@ app.get("/countyEducation", async (req: Request, res: Response) => {
 
   console.log(counties);
   res.send(counties);
+});
+
+app.get("/nationIncome", async (req: Request, res: Response) => {
+	const nationalIncome: StateIncome = await prisma.$queryRaw`
+		SELECT
+			*
+		FROM
+			public."StateIncome"
+		WHERE
+			public."StateIncome".name = 'United States'
+	;`;
+	
+	console.log(nationalIncome);
+	res.send(nationalIncome);
+});
+
+app.get("/nationEducation", async (req: Request, res: Response) => {
+	const nationalEducation: StateEducation = await prisma.$queryRaw`
+		SELECT
+			*
+		FROM
+			public."StateEducation"
+		WHERE
+			public."StateEducation".name = 'United States'
+	;`;
+	
+	console.log(nationalEducation);
+	res.send(nationalEducation);
+});
+
+app.get("/nation", async (req: Request, res: Response) => {
+	const nationData = await prisma.$queryRaw`
+		SELECT
+			*
+		FROM
+			public."StateEducation"
+		JOIN
+			public."StateIncome"
+		ON
+			public."StateEducation".id = public."StateIncome".id
+		WHERE
+			public."StateEducation".name = 'United States'
+	;`;
+	
+	console.log(nationData);
+	res.send(nationData);
 });
 
 // Get income and education data for all states
