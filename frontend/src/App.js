@@ -5,12 +5,17 @@ import RadioButton from './Components/RadioButton/RadioButton';
 import axios from 'axios';
 import Checkbox from './Components/Checkbox/Checkbox';
 import { states } from "./constants";
+import IncomeTable from './Components/Tables/IncomeTable';
+import EducationTable from './Components/Tables/EducationTable';
+import IncomeEducationTable from './Components/Tables/IncomeEducationTable';
 
 function App() {
   const [region, setRegion] = useState('');
   const [income, setIncome] = useState(false);
   const [education, setEducation] = useState(false);
-  const [data, setData] = useState([]);
+  const [incomeData, setIncomeData] = useState([]);
+  const [educationData, setEducationData] = useState([]);
+  const [incomeEducationData, setIncomeEducationData] = useState([]);
   const [dropdown1, setDropDown1] = useState("N/A");
   const [dropdown2, setDropDown2] = useState("N/A");
   const [dropdown3, setDropDown3] = useState("N/A");
@@ -108,7 +113,19 @@ function App() {
         axios.get(baseUrl + url)
           .then(response => {
             console.log('Response:', response.data);
-            setData(response.data);
+            if (income && !education) {
+              setIncomeData(response.data);
+              setEducationData([]);
+              setIncomeEducationData([]);
+            } else if (!income && education) {
+              setEducationData(response.data);
+              setIncomeData([]);
+              setIncomeEducationData([]);
+            } else if (income && education) {
+              setIncomeEducationData(response.data);
+              setIncomeData([]);
+              setEducationData([]);;
+            }
           })
           .catch(error => {
             console.error('Error fetching data:', error);
@@ -123,7 +140,7 @@ function App() {
   }
 
   return (
-    <div>
+    <div className="website">
       <div className="header">
         <h1>Welcome to Bang For Your Buck!</h1>
         <p>This is an interactive website that allows you to see how county-level income data correlates to state-wide school rankings</p>
@@ -149,6 +166,15 @@ function App() {
       <div className='submit' onClick={handleSubmit}>
         <button className="submit-button" onClick={handleSubmit}>Submit</button>
       </div>
+      {incomeData.length > 0 &&
+      <IncomeTable data={incomeData} />
+      }
+      {educationData.length > 0 &&
+      <EducationTable data={educationData} />
+      }
+      {incomeEducationData.length > 0 &&
+      <IncomeEducationTable data={incomeEducationData} />
+      }
     </div>
   );
 }
