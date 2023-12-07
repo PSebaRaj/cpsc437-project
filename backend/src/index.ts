@@ -67,6 +67,7 @@ app.get("/countyEducation", async (req: Request, res: Response) => {
   res.send(counties);
 });
 
+// Get income data for the USA
 app.get("/nationIncome", async (req: Request, res: Response) => {
 	const nationalIncome: StateIncome = await prisma.$queryRaw`
 		SELECT
@@ -81,6 +82,7 @@ app.get("/nationIncome", async (req: Request, res: Response) => {
 	res.send(nationalIncome);
 });
 
+// Get education data for the USA
 app.get("/nationEducation", async (req: Request, res: Response) => {
 	const nationalEducation: StateEducation = await prisma.$queryRaw`
 		SELECT
@@ -95,6 +97,7 @@ app.get("/nationEducation", async (req: Request, res: Response) => {
 	res.send(nationalEducation);
 });
 
+// Get income and education data for the USA
 app.get("/nation", async (req: Request, res: Response) => {
 	const nationData = await prisma.$queryRaw`
 		SELECT

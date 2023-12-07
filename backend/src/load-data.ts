@@ -2,6 +2,7 @@ import { PrismaClient } from "@prisma/client";
 import { readFileSync } from "fs";
 const prisma = new PrismaClient();
 
+// type for raw CSV data row in Education.csv
 type EducationData = {
 	id: string;
 	state_abbreviation: string;
@@ -10,6 +11,7 @@ type EducationData = {
 	value: string;
 };
 
+// type for raw CSV data row in Unemployment.csv
 type IncomeData = {
 	id: string;
 	state_abbreviation: string;
@@ -18,18 +20,22 @@ type IncomeData = {
 	value: string;
 }
 
+// string match function for median household income
 function isMedianHouseholdIncome(str: string): boolean {
   const regexPattern = /^Median_Household_Income_.*/;
 
   return regexPattern.test(str);
 }
 
+// string match function for median household income percent
+// (when compared to the median household income of the state)
 function isMedianHouseholdIncomePercent(str: string): boolean {
   const regexPattern = /^Med_HH_Income_Percent_.*/;
 
   return regexPattern.test(str);
 }
 
+// main ETL function
 async function loadIncome() {
 	console.log("Loading income data into database")
 
@@ -38,6 +44,7 @@ async function loadIncome() {
 
 	var currId = "-1";
 
+	// process row by row
 	for (let line of lines) {
 		const splitLine = line.split(',');
 
@@ -59,7 +66,7 @@ async function loadIncome() {
 					console.log("Some data is unreadable")
 					console.log("Data is: ", incomeData)
 				}
-				continue;
+				continue; // skip this entry!
 			}
 
 			if (incomeData.id == "FIPS_Code") {
@@ -76,7 +83,7 @@ async function loadIncome() {
 			// end data cleaning segment
 
 			if (currId == incomeData.id) {
-				// have already seen this before
+				// have already seen this state before... update entry
 				if (incomeData.col == "Unemployment_rate_2020") {
 					await prisma.stateIncome.update({
 						where: {
@@ -105,7 +112,7 @@ async function loadIncome() {
 						}
 					})
 				}
-			} else {
+			} else { // have not seen this state before... create new entry 
 				currId = incomeData.id;
 
 				await prisma.stateIncome.create({
@@ -139,7 +146,7 @@ async function loadIncome() {
 					console.log("Some data is unreadable")
 					console.log("Data is: ", incomeData)
 				}
-				continue;
+				continue; // skip this row!
 			}
 
 			if (incomeData.id == "FIPS_Code") {
@@ -156,7 +163,7 @@ async function loadIncome() {
 			// end data cleaning segment
 
 			if (currId == incomeData.id) {
-				// have already seen this before
+				// have already seen this county before... update entry
 				if (incomeData.col == "Unemployment_rate_2020") {
 					await prisma.countyIncome.update({
 						where: {
@@ -188,6 +195,7 @@ async function loadIncome() {
 			} else {
 				currId = incomeData.id;
 
+				// have not seen this county before... create new entry
 				await prisma.countyIncome.create({
 					data: {
 						id: incomeData.id,
@@ -212,6 +220,7 @@ async function loadEducation() {
 
 	var currId = "-1";
 
+	// process row by row
 	for (let line of lines) {
 		// const splitLine = line.split(',');
 		const splitLine = line.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map((value) => value.trim());
@@ -234,7 +243,7 @@ async function loadEducation() {
 					console.log("Some data is unreadable")
 					console.log("Data is: ", educationData)
 				}
-				continue;
+				continue; // skip this entry!
 			}
 
 			if (educationData.id == "Federal Information Processing Standard (FIPS) Code") {
@@ -255,7 +264,7 @@ async function loadEducation() {
 			}
 
 			if (currId == educationData.id) {
-				// have already seen this before
+				// have already seen this state before... update entry
 				if (educationData.col == `"Percent of adults completing four years of college or higher, 1970"`) {
 					await prisma.stateEducation.update({
 						where: {
@@ -311,7 +320,7 @@ async function loadEducation() {
 						}
 					})
 				}
-			} else {
+			} else { // have not seen this state before... create new entry
 				currId = educationData.id;
 
 				await prisma.stateEducation.create({
@@ -346,7 +355,7 @@ async function loadEducation() {
 					console.log("Some data is unreadable")
 					console.log("Data is: ", educationData)
 				}
-				continue;
+				continue; // skip this row!
 			}
 
 			if (educationData.id == "Federal Information Processing Standard (FIPS) Code") {
@@ -363,7 +372,7 @@ async function loadEducation() {
 			// end data cleaning segment
 
 			if (currId == educationData.id) {
-				// have already seen this before
+				// have already seen this county before, update entry
 				if (educationData.col == `"Percent of adults completing four years of college or higher, 1970"`) {
 					await prisma.countyEducation.update({
 						where: {
@@ -420,7 +429,7 @@ async function loadEducation() {
 					})
 				}
 
-			} else {
+			} else { // have not seen this county before, create new entry
 				currId = educationData.id;
 
 				await prisma.countyEducation.create({
