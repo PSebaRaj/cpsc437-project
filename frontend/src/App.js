@@ -31,7 +31,7 @@ function App() {
   const stateOptions = states;
 
   const resetValues = () => {
-    setRegion('');
+    // setRegion('');
     setIncome(false);
     setEducation(false);
     setDropDown1("N/A");
@@ -75,9 +75,9 @@ function App() {
         let url = "";
         if (region === "national" && dropdown1 !== "N/A") {
           if (dropdown1 === "USA") {
-            if (income && !education) console.log("Get USA's income")
-            if (education && !income) console.log("Get USA's education")
-            if (education && income) console.log("Get USA's income and education")
+            if (income && !education) url = "nationIncome"
+            if (education && !income) url = "nationEducation"
+            if (education && income) url = "nation"
           } else if (dropdown1 === "All States") {
             if (income && !education) url = "stateIncome"
             if (!income && education) url = "stateEducation"
@@ -166,15 +166,24 @@ function App() {
       <div className='submit' onClick={handleSubmit}>
         <button className="submit-button" onClick={handleSubmit}>Submit</button>
       </div>
-      {incomeData.length > 0 &&
-      <IncomeTable data={incomeData} />
-      }
-      {educationData.length > 0 &&
-      <EducationTable data={educationData} />
-      }
-      {incomeEducationData.length > 0 &&
-      <IncomeEducationTable data={incomeEducationData} />
-      }
+      <div className="tables">
+        {incomeData.length > 0 &&
+        <IncomeTable data={incomeData} />
+        }
+        {educationData.length > 0 &&
+        <EducationTable data={educationData} />
+        }
+        {incomeEducationData.length > 0 &&
+        <IncomeEducationTable
+          data={incomeEducationData}
+          region={region}
+          dropdown1={dropdown1}
+          dropdown2={dropdown2}
+          dropdown3={dropdown3}
+          dropdown4={dropdown4} 
+        />
+        }
+      </div>
     </div>
   );
 }

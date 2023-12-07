@@ -49,7 +49,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-top: 40px;
+    margin-top: 25px;
     margin-bottom: 40px;
 }
 
@@ -74,6 +74,11 @@ body {
   
 .submit-button:hover {
     background-color: #218838;
+}
+
+.tables {
+    padding-left: 30px;
+    padding-right: 30px;
 }
 
   

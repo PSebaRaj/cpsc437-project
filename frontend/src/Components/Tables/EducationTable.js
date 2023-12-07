@@ -1,7 +1,8 @@
 import React from 'react';
+import { styled } from '@mui/material/styles';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
+import TableCell, { tableCellClasses } from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
@@ -11,32 +12,53 @@ const EducationTable = (props) => {
 
   const { data } = props;
 
+  const StyledTableCell = styled(TableCell)(({ theme }) => ({
+    [`&.${tableCellClasses.head}`]: {
+      backgroundColor: theme.palette.common.black,
+      color: theme.palette.common.white,
+    },
+    [`&.${tableCellClasses.body}`]: {
+      fontSize: 14,
+    },
+  }));
+  
+  const StyledTableRow = styled(TableRow)(({ theme }) => ({
+    '&:nth-of-type(odd)': {
+      backgroundColor: theme.palette.action.hover,
+    },
+    // hide last border
+    '&:last-child td, &:last-child th': {
+      border: 0,
+    },
+  }));
+
   return (
     <div>
+      <h3>Percent of adult residents with a bachelor's degree or higher</h3>
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
-            <TableRow>
-              <TableCell align="right">Name</TableCell>
-              <TableCell align="right">y1970</TableCell>
-              <TableCell align="right">y1980</TableCell>
-              <TableCell align="right">y1990</TableCell>
-              <TableCell align="right">y2000</TableCell>
-              <TableCell align="right">y2010</TableCell>
-              <TableCell align="right">y2020</TableCell>
-            </TableRow>
+            <StyledTableRow>
+              <StyledTableCell align="center">Name</StyledTableCell>
+              <StyledTableCell align="center">1970</StyledTableCell>
+              <StyledTableCell align="center">1980</StyledTableCell>
+              <StyledTableCell align="center">1990</StyledTableCell>
+              <StyledTableCell align="center">2000</StyledTableCell>
+              <StyledTableCell align="center">2010</StyledTableCell>
+              <StyledTableCell align="center">2020</StyledTableCell>
+            </StyledTableRow>
           </TableHead>
           <TableBody>
             {data.map((row) => (
-              <TableRow key={row.id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-                <TableCell align="right">{row.name}</TableCell>
-                <TableCell align="right">{row.y1970}</TableCell>
-                <TableCell align="right">{row.y1980}</TableCell>
-                <TableCell align="right">{row.y1990}</TableCell>
-                <TableCell align="right">{row.y2000}</TableCell>
-                <TableCell align="right">{row.y2010}</TableCell>
-                <TableCell align="right">{row.y2020}</TableCell>
-              </TableRow>
+              <StyledTableRow key={row.id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                <StyledTableCell align="center">{row.name}</StyledTableCell>
+                <StyledTableCell align="center">{row.y1970}</StyledTableCell>
+                <StyledTableCell align="center">{row.y1980}</StyledTableCell>
+                <StyledTableCell align="center">{row.y1990}</StyledTableCell>
+                <StyledTableCell align="center">{row.y2000}</StyledTableCell>
+                <StyledTableCell align="center">{row.y2010}</StyledTableCell>
+                <StyledTableCell align="center">{row.y2020}</StyledTableCell>
+              </StyledTableRow>
             ))}
           </TableBody>
         </Table>
